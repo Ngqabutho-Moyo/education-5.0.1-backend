@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { SyllabiService } from './syllabi.service';
-import { SyllabiController } from './syllabi.controller';
+import { CrudModule } from 'src/common/crud/crud.module';
+import { SyllabusService } from './syllabi.service';
+import { SyllabusController } from './syllabi.controller';
 
 @Module({
-  controllers: [SyllabiController],
-  providers: [SyllabiService],
+  imports: [CrudModule],
+  controllers: [SyllabusController],
+  providers: [SyllabusService],
 })
-export class SyllabiModule {}
+export class SyllabusModule {}

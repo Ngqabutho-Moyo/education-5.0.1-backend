@@ -1,26 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
+import { CrudService } from 'src/common/crud/crud.service';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class TeachersService {
-  create(createTeacherDto: CreateTeacherDto) {
-    return 'This action adds a new teacher';
+  private readonly logger = new Logger(TeachersService.name);
+  
+  constructor(
+    private readonly crudService: CrudService, 
+    private readonly authService: AuthService
+  ) {}
+
+  async create(createTeacherDto: CreateTeacherDto) {
+    return await this.authService.signup('teacher', createTeacherDto, 'TCH');
+    /*
+    const authResponse = await this.authService.signup('teacher', createTeacherDto);
+    if(authResponse instanceof GeneralErrorResponseDto){
+      return authResponse;
+    }
+    */
   }
 
-  findAll() {
-    return `This action returns all teachers`;
+  async findAll() {
+    return await this.crudService.findAll('teacher');
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} teacher`;
+  async findOne(id: string) {
+    return await this.crudService.findOne('teacher', id);
   }
 
-  update(id: number, updateTeacherDto: UpdateTeacherDto) {
-    return `This action updates a #${id} teacher`;
+  async update(updateTeacherDto: UpdateTeacherDto) {
+    return await this.crudService.update('teacher', updateTeacherDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} teacher`;
+  async remove(id: string) {
+    return await this.crudService.delete('teacher', id);
   }
 }

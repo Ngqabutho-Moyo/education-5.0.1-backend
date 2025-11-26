@@ -1,26 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateAdministratorDto } from './dto/create-administrator.dto';
 import { UpdateAdministratorDto } from './dto/update-administrator.dto';
+import { CrudService } from 'src/common/crud/crud.service';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class AdministratorsService {
-  create(createAdministratorDto: CreateAdministratorDto) {
-    return 'This action adds a new administrator';
+  private readonly logger = new Logger(AdministratorsService.name);
+  constructor(private readonly crudService: CrudService, private readonly authService: AuthService){}
+  async create(createAdministratorDto: CreateAdministratorDto) {
+    return await this.authService.signup('administrator', createAdministratorDto, 'ADM');
+    /*
+    const authResponse = await this.authService.signup('administrator', createAdministratorDto);
+    if(authResponse instanceof GeneralErrorResponseDto){
+      return authResponse;
+    }
+    */
   }
 
-  findAll() {
-    return `This action returns all administrators`;
+  async findAll() {
+    return await this.crudService.findAll('administrator');
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} administrator`;
+  async findOne(id: string) {
+    return await this.crudService.findOne('administrator', id);
   }
 
-  update(id: number, updateAdministratorDto: UpdateAdministratorDto) {
-    return `This action updates a #${id} administrator`;
+  async update(updateAdministratorDto: UpdateAdministratorDto) {
+    return await this.crudService.update('administrator', updateAdministratorDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} administrator`;
+  async remove(id: string) {
+    return await this.crudService.delete('administrator', id);
   }
 }

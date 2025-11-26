@@ -1,26 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { CrudService } from 'src/common/crud/crud.service';
 
 @Injectable()
 export class DepartmentsService {
-  create(createDepartmentDto: CreateDepartmentDto) {
-    return 'This action adds a new department';
+  constructor(private readonly crudService: CrudService) {}
+  
+  async create(createDepartmentDto: CreateDepartmentDto) {
+    return await this.crudService.create('departments', createDepartmentDto, 'DEPT');
   }
 
-  findAll() {
-    return `This action returns all departments`;
+  async findAll() {
+    return await this.crudService.findAll('departments');
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} department`;
+  async findOne(id: string) {
+    return await this.crudService.findOne('departments', id);
   }
 
-  update(id: number, updateDepartmentDto: UpdateDepartmentDto) {
-    return `This action updates a #${id} department`;
+  async update(updateDepartmentDto: UpdateDepartmentDto) {
+    return await this.crudService.update('departments', updateDepartmentDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} department`;
+  async remove(id: string) {
+    return await this.crudService.delete('departments', id);
   }
 }

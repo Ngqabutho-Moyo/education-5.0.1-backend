@@ -6,29 +6,31 @@ import { AdministratorsModule } from './administrators/administrators.module';
 import { AssignmentsModule } from './assignments/assignments.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { SchoolsModule } from './schools/schools.module';
-import { AdministratorSchoolsModule } from './administrator_schools/administrator_schools.module';
+import { AdministratorSchoolsModule } from './administrator-schools/administrator-schools.module';
 import { DepartmentsModule } from './departments/departments.module';
 import { ClassesModule } from './classes/classes.module';
-import { StudentClassesModule } from './student_classes/student_classes.module';
-import { SubjectSyllabusModule } from './subject_syllabus/subject_syllabus.module';
-import { SyllabusAssignmentsModule } from './syllabus_assignments/syllabus_assignments.module';
-import { TeacherClassesModule } from './teacher_classes/teacher_classes.module';
+import { StudentClassesModule } from './student-classes/student-classes.module';
+import { SubjectSyllabusModule } from './subject-syllabus/subject-syllabus.module';
+import { SyllabusAssignmentsModule } from './syllabus-assignments/syllabus-assignments.module';
+import { TeacherClassesModule } from './teacher-classes/teacher-classes.module';
 import { TeachersModule } from './teachers/teachers.module';
 import { StudentsModule } from './students/students.module';
-import { DepartmentSubjectsModule } from './department_subjects/department_subjects.module';
-import { SyllabusResourcesModule } from './syllabus_resources/syllabus_resources.module';
-import { TeacherSubjectsModule } from './teacher_subjects/teacher_subjects.module';
-import { StudentParentsGuardiansModule } from './student_parents_guardians/student_parents_guardians.module';
-import { ParentsGuardiansModule } from './parents_guardians/parents_guardians.module';
-import { StudentSubjectsModule } from './student_subjects/student_subjects.module';
-import { SyllabiModule } from './syllabi/syllabi.module';
+import { DepartmentSubjectsModule } from './department-subjects/department_subjects.module';
+import { SyllabusResourcesModule } from './syllabus-resources/syllabus-resources.module';
+import { TeacherSubjectsModule } from './teacher-subjects/teacher_subjects.module';
+import { StudentParentsGuardiansModule } from './student-parents-guardians/student_parents_guardians.module';
+import { ParentGuardianModule } from './parents-guardians/parents-guardians.module';
+import { StudentSubjectsModule } from './student-subjects/student-subjects.module';
+import { SyllabusModule } from './syllabi/syllabi.module';
 import { ResourcesModule } from './resources/resources.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     AuthModule,
     AdministratorsModule,
     AssignmentsModule,
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     SubjectsModule,
     SchoolsModule,
     AdministratorSchoolsModule,
@@ -44,9 +46,9 @@ import { ResourcesModule } from './resources/resources.module';
     SyllabusResourcesModule,
     TeacherSubjectsModule,
     StudentParentsGuardiansModule,
-    ParentsGuardiansModule,
+    ParentGuardianModule,
     StudentSubjectsModule,
-    SyllabiModule,
+    SyllabusModule,
     ResourcesModule,
   ],
   controllers: [AppController],

@@ -1,26 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { CrudService } from 'src/common/crud/crud.service';
 import { CreateSyllabusDto } from './dto/create-syllabus.dto';
 import { UpdateSyllabusDto } from './dto/update-syllabus.dto';
 
 @Injectable()
-export class SyllabiService {
-  create(createSyllabusDto: CreateSyllabusDto) {
-    return 'This action adds a new syllabus';
+export class SyllabusService {
+  constructor(private readonly crudService: CrudService) {}
+  
+  async create(createSyllabusDto: CreateSyllabusDto) {
+    return await this.crudService.create('syllabi', createSyllabusDto, 'CC');
   }
 
-  findAll() {
-    return `This action returns all syllabi`;
+  async findAll() {
+    return await this.crudService.findAll('syllabi');
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} syllabus`;
+  async findOne(id: string) {
+    return await this.crudService.findOne('syllabi', id);
   }
 
-  update(id: number, updateSyllabusDto: UpdateSyllabusDto) {
-    return `This action updates a #${id} syllabus`;
+  async update(updateSyllabusDto: UpdateSyllabusDto) {
+    return await this.crudService.update('syllabi', updateSyllabusDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} syllabus`;
+  async remove(id: string) {
+    return await this.crudService.delete('syllabi', id);
   }
 }
