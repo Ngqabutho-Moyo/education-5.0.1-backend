@@ -1,26 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { CreateResourceDto } from './dto/create-resource.dto';
 import { UpdateResourceDto } from './dto/update-resource.dto';
+import { CrudService } from 'src/common/crud/crud.service';
 
 @Injectable()
 export class ResourcesService {
-  create(createResourceDto: CreateResourceDto) {
-    return 'This action adds a new resource';
+  constructor(private readonly crudService: CrudService) {}
+  
+  async create(createResourceDto: CreateResourceDto) {
+    return await this.crudService.create('resources', createResourceDto, 'RES');
   }
 
-  findAll() {
-    return `This action returns all resources`;
+  async findAll() {
+    return await this.crudService.findAll('resources');
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} resource`;
+  async findOne(id: string) {
+    return await this.crudService.findOne('resources', id);
   }
 
-  update(id: number, updateResourceDto: UpdateResourceDto) {
-    return `This action updates a #${id} resource`;
+  async update(updateResourceDto: UpdateResourceDto) {
+    return await this.crudService.update('resources', updateResourceDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} resource`;
+  async remove(id: string) {
+    return await this.crudService.delete('resources', id);
   }
 }
