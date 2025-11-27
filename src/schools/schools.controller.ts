@@ -1,9 +1,24 @@
-import { Controller, Post, Body, Get, Param, Patch, Delete } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from "@nestjs/swagger";
-import { CreateSchoolDto } from "./dto/create-school.dto";
-import { UpdateSchoolDto } from "./dto/update-school.dto";
-import { School } from "./entities/school.entity";
-import { SchoolService } from "./schools.service";
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Patch,
+  Delete,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+  ApiParam,
+} from '@nestjs/swagger';
+import { CreateSchoolDto } from './dto/create-school.dto';
+import { UpdateSchoolDto } from './dto/update-school.dto';
+import { School } from './entities/school.entity';
+import { SchoolService } from './schools.service';
+import { CreateDepartmentDto } from 'src/departments/dto/create-department.dto';
 
 @ApiTags('School')
 @Controller('school')
@@ -30,6 +45,26 @@ export class SchoolController {
     return this.schoolService.create(createSchoolDto);
   }
 
+  @Post('department')
+  @ApiOperation({
+    summary: 'Create a new school deaprtment',
+    description: 'Creates a new school deaprtment record in the system',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'School deaprtment successfully created',
+    type: School,
+  })
+  @ApiResponse({ status: 400, description: 'Bad request - invalid input data' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @ApiBody({
+    type: CreateDepartmentDto,
+    description: 'School deaprtment data to create',
+  })
+  createDepartment(@Body() cdDto: CreateDepartmentDto) {
+    return this.schoolService.createDepartment(cdDto);
+  }
+
   @Get()
   @ApiOperation({
     summary: 'Get all schools',
@@ -48,8 +83,7 @@ export class SchoolController {
   @Get(':id')
   @ApiOperation({
     summary: 'Get school by ID',
-    description:
-      'Retrieves a specific school by their unique identifier',
+    description: 'Retrieves a specific school by their unique identifier',
   })
   @ApiResponse({
     status: 200,

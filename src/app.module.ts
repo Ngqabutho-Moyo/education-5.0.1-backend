@@ -15,7 +15,7 @@ import { SyllabusAssignmentsModule } from './syllabus-assignments/syllabus-assig
 import { TeacherClassesModule } from './teacher-classes/teacher-classes.module';
 import { TeachersModule } from './teachers/teachers.module';
 import { StudentsModule } from './students/students.module';
-import { DepartmentSubjectsModule } from './department-subjects/department_subjects.module';
+import { DepartmentSubjectsModule } from './department-subjects/department-subjects.module';
 import { SyllabusResourcesModule } from './syllabus-resources/syllabus-resources.module';
 import { TeacherSubjectsModule } from './teacher-subjects/teacher_subjects.module';
 import { StudentParentsGuardiansModule } from './student-parents-guardians/student_parents_guardians.module';
@@ -24,6 +24,8 @@ import { StudentSubjectsModule } from './student-subjects/student-subjects.modul
 import { SyllabusModule } from './syllabi/syllabi.module';
 import { ResourcesModule } from './resources/resources.module';
 import { ConfigModule } from '@nestjs/config';
+import { DepartmentTeachersModule } from './department-teachers/department-teachers.module';
+import { SchoolDepartmentsModule } from './school-departments/school-departments.module';
 
 @Module({
   imports: [
@@ -50,6 +52,8 @@ import { ConfigModule } from '@nestjs/config';
     StudentSubjectsModule,
     SyllabusModule,
     ResourcesModule,
+    DepartmentTeachersModule,
+    SchoolDepartmentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { CrudService } from 'src/common/crud/crud.service';
+import { CreateTeacherSubjectDto } from 'src/teacher-subjects/dto/create-teacher-subject.dto';
+import { CreateSubjectSyllabusDto } from 'src/subject-syllabus/dto/create-subject-syllabus.dto';
 
 @Injectable()
 export class DepartmentsService {
@@ -9,6 +11,15 @@ export class DepartmentsService {
   
   async create(createDepartmentDto: CreateDepartmentDto) {
     return await this.crudService.create('departments', createDepartmentDto, 'DEPT');
+  }
+
+  
+  async assignTeacherToSubject(tsDto: CreateTeacherSubjectDto){
+    return await this.crudService.create('teacher_subjects', tsDto);
+  }
+
+  async developCurriculum(ssDto: CreateSubjectSyllabusDto){
+    return await this.crudService.create('subject_syllabus', ssDto);
   }
 
   async findAll() {

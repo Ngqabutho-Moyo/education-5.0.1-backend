@@ -16,10 +16,12 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiExcludeController,
 } from '@nestjs/swagger';
 import { ParentGuardian } from './entities/parents-guardian.entity';
 
 @ApiTags('Parent/Guardian')
+@ApiExcludeController()
 @Controller('parent-guardian')
 export class ParentGuardianController {
   constructor(private readonly parentGuardiansService: ParentGuardianService) {}

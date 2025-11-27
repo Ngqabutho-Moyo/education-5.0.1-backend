@@ -18,6 +18,10 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { Department } from './entities/department.entity';
+import { TeacherSubject } from 'src/teacher-subjects/entities/teacher-subject.entity';
+import { CreateTeacherSubjectDto } from 'src/teacher-subjects/dto/create-teacher-subject.dto';
+import { CreateSubjectSyllabusDto } from 'src/subject-syllabus/dto/create-subject-syllabus.dto';
+import { SubjectSyllabus } from 'src/subject-syllabus/entities/subject-syllabus.entity';
 
 @ApiTags('Departments')
 @Controller('departments')
@@ -42,6 +46,46 @@ export class DepartmentsController {
   })
   create(@Body() createDepartmentDto: CreateDepartmentDto) {
     return this.departmentsService.create(createDepartmentDto);
+  }
+
+  @Post('assign-teacher')
+  @ApiOperation({
+    summary: 'Assign teacher to subject',
+    description: 'Assign a teacher to a subject and record it in the system',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Assignment successfully created',
+    type: TeacherSubject,
+  })
+  @ApiResponse({ status: 400, description: 'Bad request - invalid input data' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @ApiBody({
+    type: CreateTeacherSubjectDto,
+    description: 'Teacher assignment data to create',
+  })
+  assignTeacherToSubject(@Body() tsDto: CreateTeacherSubjectDto) {
+    return this.departmentsService.assignTeacherToSubject(tsDto);
+  }
+
+  @Post('create-curriculum')
+  @ApiOperation({
+    summary: 'Create a syllabus for a given subject',
+    description: 'Assign a teacher to a subject and record it in the system',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Syllabus successfully created',
+    type: SubjectSyllabus,
+  })
+  @ApiResponse({ status: 400, description: 'Bad request - invalid input data' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @ApiBody({
+    type: CreateSubjectSyllabusDto,
+    description: 'Syllabus to create',
+  })
+  developCurriculum(@Body() ssDto: CreateSubjectSyllabusDto) {
+    return this.departmentsService.developCurriculum(ssDto);
   }
 
   @Get()

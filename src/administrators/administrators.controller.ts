@@ -18,6 +18,8 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { Administrator } from './entities/administrator.entity';
+import { School } from 'src/schools/entities/school.entity';
+import { CreateSchoolDto } from 'src/schools/dto/create-school.dto';
 
 @ApiTags('Administrator')
 @Controller('administrator')
@@ -42,6 +44,26 @@ export class AdministratorsController {
   })
   create(@Body() createAdministratorDto: CreateAdministratorDto) {
     return this.administratorsService.create(createAdministratorDto);
+  }
+
+  @Post('school')
+  @ApiOperation({
+    summary: 'Create a new school',
+    description: 'Administrator creates a new school in the system',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'School successfully created',
+    type: School,
+  })
+  @ApiResponse({ status: 400, description: 'Bad request - invalid input data' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @ApiBody({
+    type: CreateSchoolDto,
+    description: 'School data to create',
+  })
+  createSchool(@Body() csDto: CreateSchoolDto) {
+    return this.administratorsService.createSchool(csDto);
   }
 
   @Get()

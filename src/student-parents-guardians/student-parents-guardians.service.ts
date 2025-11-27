@@ -1,26 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { CreateStudentParentsGuardianDto } from './dto/create-student-parents-guardian.dto';
-import { UpdateStudentParentsGuardianDto } from './dto/update-student-parents-guardian.dto';
+import { CrudService } from 'src/common/crud/crud.service';
 
 @Injectable()
 export class StudentParentsGuardiansService {
-  create(createStudentParentsGuardianDto: CreateStudentParentsGuardianDto) {
-    return 'This action adds a new studentParentsGuardian';
+  constructor(private readonly crudService: CrudService) {}
+  
+  async create(createStudentParentsGuardianDto: CreateStudentParentsGuardianDto) {
+    return await this.crudService.create('student_parents_guardians', createStudentParentsGuardianDto, 'STUPG');
   }
 
-  findAll() {
-    return `This action returns all studentParentsGuardians`;
+  async findAll() {
+    return await this.crudService.findAll('student_parents_guardians');
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} studentParentsGuardian`;
+  async findOne(id: string) {
+    return await this.crudService.findOne('student_parents_guardians', id);
   }
 
-  update(id: number, updateStudentParentsGuardianDto: UpdateStudentParentsGuardianDto) {
-    return `This action updates a #${id} studentParentsGuardian`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} studentParentsGuardian`;
+  async remove(id: string) {
+    return await this.crudService.delete('student_parents_guardians', id);
   }
 }

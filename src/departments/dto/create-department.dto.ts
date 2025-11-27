@@ -83,4 +83,10 @@ export class CreateDepartmentDto {
   @IsString({ each: true })
   @IsOptional()
   academic_levels?: string[];
+
+  @ApiProperty({
+    description: 'School UUID',
+    example: '6b99f134-70d6-41af-81bf-fadc7c778e4f',
+  })
+  school_id: string;
 }
