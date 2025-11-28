@@ -22,7 +22,6 @@ export class CrudService {
     createDto: object,
     code?: string,
   ): Promise<SuccessResponseDto | GeneralErrorResponseDto> {
-    this.logger.debug(createDto);
     try {
       // Generate code
       if (code) {
@@ -30,10 +29,6 @@ export class CrudService {
         if (record instanceof GeneralErrorResponseDto) {
           return record;
         }
-        this.logger.warn(
-          `Recent record for ${tableName}:`,
-          record.data === null,
-        );
         if (record instanceof GeneralErrorResponseDto) {
           return record;
         }
@@ -59,7 +54,7 @@ export class CrudService {
           }
         }
       }
-      this.logger.debug(createDto);
+      // Insert record
       const { data, error } = await this.postgresrest
         .from(tableName)
         .insert(createDto)
@@ -67,7 +62,7 @@ export class CrudService {
         .single();
       if (error) {
         this.logger.error(
-          `Failed to insert into ${tableName} ${JSON.stringify(error)}`,
+          `Failed to insert into ${tableName}`, error
         );
         return new GeneralErrorResponseDto(
           400,

@@ -32,6 +32,12 @@ export class StudentClass {
   class_id: string;
 
   @ApiProperty({
+    description: 'Teacher ID UUID',
+    example: '28b8970e-b6e7-49ec-acb2-fafc59fd50ff',
+  })
+  teacher_id: string;
+
+  @ApiProperty({
     description: 'Status of the relationship',
     example: 'Enrolled',
   })

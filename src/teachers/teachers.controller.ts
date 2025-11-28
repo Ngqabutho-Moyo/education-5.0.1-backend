@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { TeachersService } from './teachers.service';
-import { CreateTeacherDto } from './dto/create-teacher.dto';
+import { CreateTeacherDto, EnrolStudentDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import {
   ApiTags,
@@ -18,6 +18,10 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { Teacher } from './entities/teacher.entity';
+import { CreateResourceDto } from 'src/resources/dto/create-resource.dto';
+import { Resource } from 'src/resources/entities/resource.entity';
+import { Assignment } from 'src/assignments/entities/assignment.entity';
+import { CreateAssignmentDto } from 'src/assignments/dto/create-assignment.dto';
 
 @ApiTags('Teacher')
 @Controller('teacher')
@@ -42,6 +46,46 @@ export class TeachersController {
   })
   create(@Body() createTeacherDto: CreateTeacherDto) {
     return this.teachersService.create(createTeacherDto);
+  }
+
+  @Post('resource')
+  @ApiOperation({
+    summary: 'Create a new syllabus resource',
+    description: 'Creates a new syllabus resource record in the system',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Syllabus resource successfully created',
+    type: Resource,
+  })
+  @ApiResponse({ status: 400, description: 'Bad request - invalid input data' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @ApiBody({
+    type: CreateResourceDto,
+    description: 'Resource data to create',
+  })
+  postResource(@Body() resourceDto: CreateResourceDto){
+    return this.teachersService.postResource(resourceDto);
+  }
+
+  @Post('assignment')
+  @ApiOperation({
+    summary: 'Create a new syllabus assignment',
+    description: 'Creates a new syllabus assignment record in the system',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Syllabus assignment successfully created',
+    type: Assignment,
+  })
+  @ApiResponse({ status: 400, description: 'Bad request - invalid input data' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @ApiBody({
+    type: CreateAssignmentDto,
+    description: 'Assignment data to create',
+  })
+  postAssgnment(@Body() assignmentDto: CreateAssignmentDto){
+    return this.teachersService.postAssgnment(assignmentDto);
   }
 
   @Get()
@@ -101,6 +145,26 @@ export class TeachersController {
   })
   update(@Body() updateTeacherDto: UpdateTeacherDto) {
     return this.teachersService.update(updateTeacherDto);
+  }
+
+  @Patch('enrol')
+  @ApiOperation({
+    summary: 'Enrol a student',
+    description: 'Enrol a student into a given class',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Student enrolled successfully',
+    type: EnrolStudentDto,
+  })
+  @ApiResponse({ status: 400, description: 'Bad request - invalid input data' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @ApiBody({
+    type: EnrolStudentDto,
+    description: 'Enrollment data',
+  })
+  enrolStudentIntoClass(@Body() enrolStudentDto: EnrolStudentDto){
+    return this.teachersService.enrolStudentIntoClass(enrolStudentDto);
   }
 
   @Delete(':id')

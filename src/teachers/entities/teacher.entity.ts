@@ -64,7 +64,13 @@ export class Teacher {
 
   @ApiProperty({
     description: 'Password',
-    example: 'usdbkjgiyskskjsd7!@#',
+    example: 'password',
   })
   password: string;
+
+  @ApiProperty({
+    description: 'School ID',
+    example: 'fc4c0906-306d-4f6f-ade2-c51aff7751f0',
+  })
+  school_id?: string;
 }

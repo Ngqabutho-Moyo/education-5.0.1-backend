@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString, IsEmail, IsDateString } from 'class-validator';
+import { IsOptional, IsString, IsEmail, IsDateString, IsUUID } from 'class-validator';
 
 export class CreateStudentDto {
+  /*
   @ApiProperty({
     description: 'Unique identifier for the student',
     example: '380ca6bc-cae9-4486-a543-056029aaba1c',
@@ -33,6 +34,7 @@ export class CreateStudentDto {
   @IsString()
   @IsOptional()
   code?: string;
+  */
 
   @ApiProperty({
     description: 'First name of the student',
@@ -76,7 +78,7 @@ export class CreateStudentDto {
 
   @ApiProperty({
     description: 'Password',
-    example: 'usdbkjgiyskskjsd7!@#',
+    example: 'password',
   })
   @IsString()
   @IsOptional()
@@ -89,4 +91,11 @@ export class CreateStudentDto {
   @IsEmail()
   @IsOptional()
   email?: string;
+
+  @ApiProperty({
+    description: 'School ID UUID',
+    example: '6f8c322c-b8ff-4224-97eb-edbec26b1033',
+  })
+  @IsUUID()
+  school_id: string;
 }

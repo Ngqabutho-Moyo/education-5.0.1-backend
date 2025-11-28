@@ -44,7 +44,7 @@ export class CreateTeacherClassDto {
 
   @ApiProperty({
     description: 'Status of the relationship',
-    example: 'Active',
+    example: 'active',
   })
   @IsString()
   @IsOptional()

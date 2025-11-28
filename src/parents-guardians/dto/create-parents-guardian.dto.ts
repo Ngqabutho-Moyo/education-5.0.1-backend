@@ -76,7 +76,7 @@ export class CreateParentGuardianDto {
 
   @ApiProperty({
     description: 'Password',
-    example: 'usdbkjgiyskskjsd7!@#',
+    example: 'password',
   })
   @IsString()
   @IsOptional()

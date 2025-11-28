@@ -1,39 +1,14 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString, IsEmail, IsArray, IsUUID } from 'class-validator';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
+import {
+  IsOptional,
+  IsString,
+  IsEmail,
+  IsArray,
+  IsUUID,
+} from 'class-validator';
+import { CreateStudentClassDto } from 'src/student-classes/dto/create-student-class.dto';
 
 export class CreateTeacherDto {
-  @ApiProperty({
-    description: 'Unique identifier for the teacher',
-    example: '380ca6bc-cae9-4486-a543-056029aaba1c',
-  })
-  @IsString()
-  @IsOptional()
-  id?: string;
-
-  @ApiProperty({
-    description: 'Timestamp of creation',
-    example: '2025-08-21 12:58:15.357772+00',
-  })
-  @IsString()
-  @IsOptional()
-  created_at?: string;
-
-  @ApiProperty({
-    description: 'Timestamp of last update',
-    example: '2025-08-21 12:58:15.357772+00',
-  })
-  @IsString()
-  @IsOptional()
-  updated_at?: string;
-
-  @ApiProperty({
-    description: 'Teacher code',
-    example: 'TCH001',
-  })
-  @IsString()
-  @IsOptional()
-  code?: string;
-
   @ApiProperty({
     description: 'First name of the teacher',
     example: 'Simon',
@@ -86,9 +61,19 @@ export class CreateTeacherDto {
 
   @ApiProperty({
     description: 'Password',
-    example: 'usdbkjgiyskskjsd7!@#',
+    example: 'password',
   })
   @IsString()
   @IsOptional()
   password?: string;
+
+  @ApiProperty({
+    description: 'School ID',
+    example: 'fc4c0906-306d-4f6f-ade2-c51aff7751f0',
+  })
+  @IsString()
+  @IsOptional()
+  school_id?: string;
 }
+
+export class EnrolStudentDto extends PartialType(CreateStudentClassDto){}

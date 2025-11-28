@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString, IsUUID, IsDateString } from 'class-validator';
+import { IsString, IsUUID, IsDateString } from 'class-validator';
 
 export class CreateSyllabusDto {
+  /*
   @ApiProperty({
-    description: 'Unique identifier for the course content',
+    description: 'Unique identifier for the syllabus',
     example: '380ca6bc-cae9-4486-a543-056029aaba1c',
   })
   @IsString()
@@ -25,6 +26,7 @@ export class CreateSyllabusDto {
   @IsString()
   @IsOptional()
   updated_at?: string;
+  
 
   @ApiProperty({
     description: 'Course content code',
@@ -33,60 +35,54 @@ export class CreateSyllabusDto {
   @IsString()
   @IsOptional()
   code?: string;
+  */
 
   @ApiProperty({
-    description: 'Name of the course content',
+    description: 'Name of the syllabus',
     example: 'Introduction to Programming Syllabus',
   })
   @IsString()
-  @IsOptional()
-  name?: string;
+  name: string;
 
   @ApiProperty({
-    description: 'Description of the course content',
+    description: 'Description of the syllabus',
     example: 'Comprehensive syllabus covering programming fundamentals',
   })
   @IsString()
-  @IsOptional()
-  description?: string;
+  description: string;
 
   @ApiProperty({
-    description: 'Academic level for the course content',
+    description: 'Academic level for the syllabus',
     example: 'Undergraduate',
   })
   @IsString()
-  @IsOptional()
-  academic_level?: string;
+  academic_level: string;
 
   @ApiProperty({
-    description: 'Publish date of the course content',
+    description: 'Publish date of the syllabus',
     example: '2024-01-15',
   })
   @IsDateString()
-  @IsOptional()
-  publish_date?: string;
+  publish_date: string;
 
   @ApiProperty({
-    description: 'Completion date of the course content',
+    description: 'Completion date of the syllabus',
     example: '2024-12-15',
   })
   @IsDateString()
-  @IsOptional()
-  completion_date?: string;
+  completion_date: string;
 
   @ApiProperty({
-    description: 'Status of the course content',
+    description: 'Status of the syllabus',
     example: 'Published',
   })
   @IsString()
-  @IsOptional()
-  status?: string;
+  status: string;
 
   @ApiProperty({
     description: 'Subject ID UUID',
     example: '380ca6bc-cae9-4486-a543-056029aaba1c',
   })
   @IsUUID()
-  @IsOptional()
-  subject_id?: string;
+  subject_id: string;
 }

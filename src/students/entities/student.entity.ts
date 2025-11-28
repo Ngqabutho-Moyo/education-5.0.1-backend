@@ -57,7 +57,7 @@ export class Student {
 
   @ApiProperty({
     description: 'Password',
-    example: 'usdbkjgiyskskjsd7!@#',
+    example: 'password',
   })
   password: string;
 
@@ -66,4 +66,10 @@ export class Student {
     example: 'john.doe@example.com',
   })
   email: string;
+
+  @ApiProperty({
+    description: 'School ID UUID',
+    example: '6f8c322c-b8ff-4224-97eb-edbec26b1033',
+  })
+  school_id: string;
 }

@@ -9,5 +9,6 @@ import { AuthModule } from 'src/auth/auth.module';
   imports: [CrudModule, PostgresRestHandlerModule, AuthModule],
   controllers: [StudentsController],
   providers: [StudentsService],
+  exports: [StudentsService]
 })
 export class StudentsModule {}

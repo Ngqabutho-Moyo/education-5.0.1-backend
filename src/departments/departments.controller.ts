@@ -20,8 +20,8 @@ import {
 import { Department } from './entities/department.entity';
 import { TeacherSubject } from 'src/teacher-subjects/entities/teacher-subject.entity';
 import { CreateTeacherSubjectDto } from 'src/teacher-subjects/dto/create-teacher-subject.dto';
-import { CreateSubjectSyllabusDto } from 'src/subject-syllabus/dto/create-subject-syllabus.dto';
 import { SubjectSyllabus } from 'src/subject-syllabus/entities/subject-syllabus.entity';
+import { CreateSyllabusDto } from 'src/syllabi/dto/create-syllabus.dto';
 
 @ApiTags('Departments')
 @Controller('departments')
@@ -68,7 +68,7 @@ export class DepartmentsController {
     return this.departmentsService.assignTeacherToSubject(tsDto);
   }
 
-  @Post('create-curriculum')
+  @Post('create-syllabus')
   @ApiOperation({
     summary: 'Create a syllabus for a given subject',
     description: 'Assign a teacher to a subject and record it in the system',
@@ -81,11 +81,11 @@ export class DepartmentsController {
   @ApiResponse({ status: 400, description: 'Bad request - invalid input data' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
   @ApiBody({
-    type: CreateSubjectSyllabusDto,
+    type: CreateSyllabusDto,
     description: 'Syllabus to create',
   })
-  developCurriculum(@Body() ssDto: CreateSubjectSyllabusDto) {
-    return this.departmentsService.developCurriculum(ssDto);
+  createSyllabus(@Body() syllabusDto: CreateSyllabusDto) {
+    return this.departmentsService.createSyllabus(syllabusDto);
   }
 
   @Get()

@@ -33,7 +33,7 @@ export class SubjectSyllabus {
 
   @ApiProperty({
     description: 'Status of the relationship',
-    example: 'Active',
+    example: 'active',
   })
   status: string;
 }

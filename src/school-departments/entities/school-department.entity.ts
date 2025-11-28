@@ -33,7 +33,7 @@ export class SchoolDepartment {
 
   @ApiProperty({
     description: 'Status of the relationship',
-    example: 'Active',
+    example: 'active',
   })
   status: string;
 

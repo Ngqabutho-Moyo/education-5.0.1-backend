@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateSubjectDto {
+  /*
   @ApiProperty({
     description: 'Unique identifier for the subject',
     example: '380ca6bc-cae9-4486-a543-056029aaba1c',
@@ -25,7 +26,7 @@ export class CreateSubjectDto {
   @IsString()
   @IsOptional()
   updated_at?: string;
-
+  
   @ApiProperty({
     description: 'Subject code',
     example: 'MATH101',
@@ -33,6 +34,7 @@ export class CreateSubjectDto {
   @IsString()
   @IsOptional()
   code?: string;
+  */
 
   @ApiProperty({
     description: 'Name of the subject',
@@ -49,7 +51,7 @@ export class CreateSubjectDto {
   @IsString()
   @IsOptional()
   academic_level?: string;
-
+  /*
   @ApiProperty({
     description: 'Department UUID',
     example: '0b9df507-944e-4222-ba3a-afa329d13840',
@@ -73,4 +75,13 @@ export class CreateSubjectDto {
   @IsUUID()
   @IsOptional()
   course_content?: string;
+  */
+
+  @ApiProperty({
+    description: 'School UUID',
+    example: 'fc4c0906-306d-4f6f-ade2-c51aff7751f0',
+  })
+  @IsUUID()
+  @IsOptional()
+  school_id?: string;
 }

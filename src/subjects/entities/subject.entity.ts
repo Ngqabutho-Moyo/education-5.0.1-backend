@@ -54,4 +54,10 @@ export class Subject {
     example: '380ca6bc-cae9-4486-a543-056029aaba1c',
   })
   course_content: string;
+
+  @ApiProperty({
+    description: 'School UUID',
+    example: 'fc4c0906-306d-4f6f-ade2-c51aff7751f0',
+  })
+  school_id: string;
 }

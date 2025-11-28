@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ParentGuardianService } from './parents_guardians.service';
+import { ParentGuardianService } from './parents-guardians.service';
 import { CreateParentGuardianDto } from './dto/create-parents-guardian.dto';
 import { UpdateParentGuardianDto } from './dto/update-parents-guardian.dto';
 import {

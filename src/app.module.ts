@@ -18,7 +18,7 @@ import { StudentsModule } from './students/students.module';
 import { DepartmentSubjectsModule } from './department-subjects/department-subjects.module';
 import { SyllabusResourcesModule } from './syllabus-resources/syllabus-resources.module';
 import { TeacherSubjectsModule } from './teacher-subjects/teacher_subjects.module';
-import { StudentParentsGuardiansModule } from './student-parents-guardians/student_parents_guardians.module';
+import { StudentParentsGuardiansModule } from './student-parents-guardians/student-parents-guardians.module';
 import { ParentGuardianModule } from './parents-guardians/parents-guardians.module';
 import { StudentSubjectsModule } from './student-subjects/student-subjects.module';
 import { SyllabusModule } from './syllabi/syllabi.module';
@@ -26,6 +26,9 @@ import { ResourcesModule } from './resources/resources.module';
 import { ConfigModule } from '@nestjs/config';
 import { DepartmentTeachersModule } from './department-teachers/department-teachers.module';
 import { SchoolDepartmentsModule } from './school-departments/school-departments.module';
+import { SchoolSubjectsModule } from './school-subjects/school-subjects.module';
+import { SchoolTeachersModule } from './school-teachers/school-teachers.module';
+import { SchoolStudentsModule } from './school-students/school-students.module';
 
 @Module({
   imports: [
@@ -54,6 +57,9 @@ import { SchoolDepartmentsModule } from './school-departments/school-departments
     ResourcesModule,
     DepartmentTeachersModule,
     SchoolDepartmentsModule,
+    SchoolSubjectsModule,
+    SchoolTeachersModule,
+    SchoolStudentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

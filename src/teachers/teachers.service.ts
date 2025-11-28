@@ -1,26 +1,141 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable, Logger } from '@nestjs/common';
-import { CreateTeacherDto } from './dto/create-teacher.dto';
+import { CreateTeacherDto, EnrolStudentDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { CrudService } from 'src/common/crud/crud.service';
 import { AuthService } from 'src/auth/auth.service';
+import { PostgresRest } from 'src/common/postgresrest/postgresrest.service';
+import { GeneralErrorResponseDto } from 'src/common/dto/general-error-response.dto';
+import { SuccessResponseDto } from 'src/common/dto/success-response.dto';
+import { CreateResourceDto } from 'src/resources/dto/create-resource.dto';
+import { Resource } from 'src/resources/entities/resource.entity';
+import { CreateAssignmentDto } from 'src/assignments/dto/create-assignment.dto';
+import { CreateSyllabusResourceDto } from 'src/syllabus-resources/dto/create-syllabus-resource.dto';
+import { Assignment } from 'src/assignments/entities/assignment.entity';
+import { CreateSyllabusAssignmentDto } from 'src/syllabus-assignments/dto/create-syllabus-assignment.dto';
 
 @Injectable()
 export class TeachersService {
   private readonly logger = new Logger(TeachersService.name);
-  
+
   constructor(
-    private readonly crudService: CrudService, 
-    private readonly authService: AuthService
+    private readonly crudService: CrudService,
+    private readonly authService: AuthService,
+    private readonly postgresrest: PostgresRest,
   ) {}
 
   async create(createTeacherDto: CreateTeacherDto) {
     return await this.authService.signup('teacher', createTeacherDto, 'TCH');
-    /*
-    const authResponse = await this.authService.signup('teacher', createTeacherDto);
-    if(authResponse instanceof GeneralErrorResponseDto){
-      return authResponse;
+  }
+
+  async enrolStudentIntoClass(enrolStudentDto: EnrolStudentDto) {
+    const { data, error } = await this.postgresrest
+      .from('student_classes')
+      .update({ status: 'enrolled', updated_at: new Date() })
+      .eq('student_id', enrolStudentDto.student_id)
+      .eq('class_id', enrolStudentDto.class_id)
+      .eq('teacher_id', enrolStudentDto.teacher_id)
+      .select()
+      .single();
+    if (error && error.code != 'PGRST116') {
+      this.logger.error('Failed to update student_classes', error);
+      return new GeneralErrorResponseDto(
+        400,
+        'Failed to update student_classes',
+      );
     }
-    */
+    this.logger.log('Student has been enrolled', data);
+    return new SuccessResponseDto(200, 'Student enrolled successfully', data);
+  }
+
+  async postResource(resourceDto: CreateResourceDto) {
+    try {
+      // Check if the resource already exists for the given syllabus
+      const syllabusExistsResponse = await this.crudService.findOneByColumn(
+        'resources',
+        'name',
+        resourceDto.name,
+      );
+      if (syllabusExistsResponse instanceof GeneralErrorResponseDto) {
+        return syllabusExistsResponse;
+      }
+      if (syllabusExistsResponse.data) {
+        return new GeneralErrorResponseDto(
+          400,
+          `Resource ${resourceDto.name} already exists`,
+        );
+      }
+
+      // Create the resource
+      const createResourceResponse = await this.crudService.create(
+        'resources',
+        resourceDto,
+        'RES',
+      );
+      if (createResourceResponse instanceof GeneralErrorResponseDto) {
+        return createResourceResponse;
+      }
+
+      const resource = createResourceResponse.data as Resource;
+      
+      // Create the syllabus-resource relationship
+      const srDto = new CreateSyllabusResourceDto();
+      srDto.syllabus_id = resourceDto.syllabus_id;
+      srDto.resource_id = resource.id;
+      srDto.status = 'created';
+
+      const srResponse = await this.crudService.create('syllabus_resources', srDto);
+      if(srResponse instanceof GeneralErrorResponseDto){
+        return srResponse;
+      }
+
+      return new SuccessResponseDto(
+        201,
+        'Resource created successfully',
+        resource,
+      );
+    } catch (e) {
+      this.logger.error('postResource error', e);
+      return new GeneralErrorResponseDto(500, 'postResource error', e);
+    }
+  }
+
+  async postAssgnment(assignmentDto: CreateAssignmentDto) {
+    try {
+
+      // Create the assignment
+      const createAssignmentResponse = await this.crudService.create(
+        'assignments',
+        assignmentDto,
+        'ASN',
+      );
+      if (createAssignmentResponse instanceof GeneralErrorResponseDto) {
+        return createAssignmentResponse;
+      }
+
+      const assignment = createAssignmentResponse.data as Assignment;
+
+      // Create the syllabus-assignment relationship
+      const saDto = new CreateSyllabusAssignmentDto();
+      saDto.syllabus_id = assignmentDto.syllabus_id;
+      saDto.assignment_id = assignment.id;
+      saDto.status = 'created';
+
+      const saResponse = await this.crudService.create('syllabus_assignments', saDto);
+      if(saResponse instanceof GeneralErrorResponseDto){
+        return saResponse;
+      }
+
+      return new SuccessResponseDto(
+        201,
+        'Assignment created successfully',
+        assignment,
+      );
+    } catch (e) {
+      this.logger.error('postResource error', e);
+      return new GeneralErrorResponseDto(500, 'postResource error', e);
+    }
   }
 
   async findAll() {

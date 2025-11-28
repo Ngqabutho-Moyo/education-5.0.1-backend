@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString, IsEmail, IsArray, IsUUID } from 'class-validator';
+import { IsOptional, IsString, IsEmail, IsArray, } from 'class-validator';
 
 export class CreateDepartmentDto {
+  /*
   @ApiProperty({
     description: 'Unique identifier for the department',
     example: '380ca6bc-cae9-4486-a543-056029aaba1c',
@@ -33,14 +34,13 @@ export class CreateDepartmentDto {
   @IsString()
   @IsOptional()
   code?: string;
-
+  */
   @ApiProperty({
     description: 'Name of the department',
     example: 'Computer Science',
   })
   @IsString()
-  @IsOptional()
-  name?: string;
+  name: string;
 
   @ApiProperty({
     description: 'Description of the department',
@@ -65,7 +65,7 @@ export class CreateDepartmentDto {
   @IsEmail()
   @IsOptional()
   email?: string;
-
+  /*
   @ApiProperty({
     description: 'Head of Department (teacher ID)',
     example: 'f2e9b148-6862-4f92-960b-dcc99bb72c31',
@@ -73,6 +73,7 @@ export class CreateDepartmentDto {
   @IsUUID()
   @IsOptional()
   head_of_department?: string;
+  */
 
   @ApiProperty({
     description: 'Array of academic levels offered by the department',

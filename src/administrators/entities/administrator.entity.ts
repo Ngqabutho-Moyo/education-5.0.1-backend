@@ -57,7 +57,7 @@ export class Administrator {
 
   @ApiProperty({
     description: 'Password',
-    example: 'usdbkjgiyskskjsd7!@#',
+    example: 'password',
   })
   password: string;
 }

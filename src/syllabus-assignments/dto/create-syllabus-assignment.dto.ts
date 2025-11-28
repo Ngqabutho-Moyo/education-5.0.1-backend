@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateSyllabusAssignmentDto {
+  /*
   @ApiProperty({
     description: 'Unique identifier for the syllabus-assignment relationship',
     example: '380ca6bc-cae9-4486-a543-056029aaba1c',
@@ -25,6 +26,7 @@ export class CreateSyllabusAssignmentDto {
   @IsString()
   @IsOptional()
   updated_at?: string;
+  */
 
   @ApiProperty({
     description: 'Syllabus ID UUID',
@@ -44,7 +46,7 @@ export class CreateSyllabusAssignmentDto {
 
   @ApiProperty({
     description: 'Status of the relationship',
-    example: 'Active',
+    example: 'active',
   })
   @IsString()
   @IsOptional()

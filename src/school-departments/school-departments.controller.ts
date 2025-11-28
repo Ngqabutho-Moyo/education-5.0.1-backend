@@ -14,10 +14,12 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiExcludeController,
 } from '@nestjs/swagger';
 import { SchoolDepartment } from './entities/school-department.entity';
 
 @ApiTags('SchoolDepartments')
+@ApiExcludeController()
 @Controller('school-departments')
 export class SchoolDepartmentsController {
   constructor(private readonly schoolDepartmentsService: SchoolDepartmentsService) {}

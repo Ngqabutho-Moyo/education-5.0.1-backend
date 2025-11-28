@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateStudentClassDto {
+  /*
   @ApiProperty({
     description: 'Unique identifier for the student-class relationship',
     example: '380ca6bc-cae9-4486-a543-056029aaba1c',
@@ -25,6 +26,7 @@ export class CreateStudentClassDto {
   @IsString()
   @IsOptional()
   updated_at?: string;
+  */
 
   @ApiProperty({
     description: 'Student ID UUID',
@@ -41,6 +43,13 @@ export class CreateStudentClassDto {
   @IsUUID()
   @IsOptional()
   class_id?: string;
+
+  @ApiProperty({
+    description: 'Teacher ID UUID',
+    example: '28b8970e-b6e7-49ec-acb2-fafc59fd50ff',
+  })
+  @IsUUID()
+  teacher_id: string;
 
   @ApiProperty({
     description: 'Status of the relationship',
