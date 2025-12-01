@@ -248,6 +248,22 @@ export class SchoolService {
     return await this.crudService.findAll('schools');
   }
 
+  async findAllTeachersForSchool(school_id: string){
+    return await this.crudService.findAllByColumn('teacher', 'school_id', school_id);
+  }
+
+  async findAllStudentsForSchool(school_id: string){
+    return await this.crudService.findAllByColumn('student', 'school_id', school_id);
+  }
+
+  async findAllDepartmentsForSchool(school_id: string){
+    return await this.crudService.findAllByColumn('departments', 'school_id', school_id);
+  }
+
+  async findAllSubjectsForSchool(school_id: string){
+    return await this.crudService.findAllByColumn('subjects', 'school_id', school_id);
+  }
+
   async findOne(id: string) {
     return await this.crudService.findOne('schools', id);
   }
@@ -259,4 +275,5 @@ export class SchoolService {
   async remove(id: string) {
     return await this.crudService.delete('schools', id);
   }
+  
 }

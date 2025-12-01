@@ -16,10 +16,12 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiExcludeController,
 } from '@nestjs/swagger';
 import { Resource } from './entities/resource.entity';
 
 @ApiTags('Resources')
+@ApiExcludeController()
 @Controller('resources')
 export class ResourcesController {
   constructor(private readonly resourcesService: ResourcesService) {}

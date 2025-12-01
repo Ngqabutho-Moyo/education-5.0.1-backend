@@ -51,15 +51,7 @@ export class CreateSubjectDto {
   @IsString()
   @IsOptional()
   academic_level?: string;
-  /*
-  @ApiProperty({
-    description: 'Department UUID',
-    example: '0b9df507-944e-4222-ba3a-afa329d13840',
-  })
-  @IsUUID()
-  @IsOptional()
-  department?: string;
-
+  
   @ApiProperty({
     description: 'Teacher in charge UUID',
     example: 'f2e9b148-6862-4f92-960b-dcc99bb72c31',
@@ -67,7 +59,7 @@ export class CreateSubjectDto {
   @IsUUID()
   @IsOptional()
   teacher_in_charge?: string;
-
+  /*
   @ApiProperty({
     description: 'Course content UUID',
     example: '380ca6bc-cae9-4486-a543-056029aaba1c',
@@ -84,4 +76,10 @@ export class CreateSubjectDto {
   @IsUUID()
   @IsOptional()
   school_id?: string;
+
+  @ApiProperty({
+    description: 'Department UUID',
+    example: '920e235d-87db-4019-b7d5-81dc57aa9185',
+  })
+  department_id: string;
 }

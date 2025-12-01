@@ -53,7 +53,7 @@ export class CreateStudentClassDto {
 
   @ApiProperty({
     description: 'Status of the relationship',
-    example: 'Enrolled',
+    example: 'enrolled',
   })
   @IsString()
   @IsOptional()

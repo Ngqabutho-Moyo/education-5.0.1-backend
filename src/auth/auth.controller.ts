@@ -23,15 +23,7 @@ export class AuthController {
     }
     return response;
   }
-  /*
   @ApiExcludeEndpoint()
-  @Get('profiles/:id')
-  async getUser(@Param('id') id: string) {
-    console.log('AuthGuard works 🎉');
-    return await this.authService.getUser(id);
-  }
-  */
-
   @ApiOperation({ summary: 'Create account' })
   @ApiBody({ type: Object })
   @ApiResponse({
@@ -62,13 +54,6 @@ export class AuthController {
     }
     return response;
   }
-  /*
-  @ApiExcludeEndpoint()
-  @Patch('update-account')
-  async update(@Body() updateUserDto: LoginDto) {
-    return this.authService.update(updateUserDto);
-  }
-  */
 
   @Post('login')
   @ApiBody({ type: LoginDto })

@@ -16,6 +16,7 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiExcludeEndpoint,
 } from '@nestjs/swagger';
 import { Student } from './entities/student.entity';
 
@@ -24,6 +25,7 @@ import { Student } from './entities/student.entity';
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
+  @ApiExcludeEndpoint()
   @Post()
   @ApiOperation({
     summary: 'Create a new student',
@@ -44,6 +46,7 @@ export class StudentsController {
     return this.studentsService.create(createStudentDto);
   }
 
+  @ApiExcludeEndpoint()
   @Get()
   @ApiOperation({
     summary: 'Get all students',
@@ -80,6 +83,29 @@ export class StudentsController {
   })
   findOne(@Param('id') id: string) {
     return this.studentsService.findOne(id);
+  }
+
+  @Get(':student_id/classes')
+  @ApiOperation({
+    summary: 'Get student classes by student ID',
+    description: 'Retrieves a student\'s classes',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved classes',
+    type: Student,
+  })
+  @ApiResponse({ status: 404, description: 'Classes not found' })
+  @ApiResponse({ status: 400, description: 'Invalid UUID format' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @ApiParam({
+    name: 'student_id',
+    type: String,
+    description: 'Student UUID',
+    example: '380ca6bc-cae9-4486-a543-056029aaba1c',
+  })
+  viewClasses(@Param('student_id') student_id: string){
+    return this.studentsService.viewClasses(student_id);
   }
 
   @Patch()

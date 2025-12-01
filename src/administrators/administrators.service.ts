@@ -74,6 +74,10 @@ export class AdministratorsService {
     return await this.crudService.findAll('administrator');
   }
 
+  async findAllSchoolsForAdmin(admin_id: string) {
+    return await this.crudService.findAllByColumn('schools', 'admin_id', admin_id);
+  }
+
   async findOne(id: string) {
     return await this.crudService.findOne('administrator', id);
   }

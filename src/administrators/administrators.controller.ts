@@ -16,40 +16,41 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiExcludeEndpoint,
 } from '@nestjs/swagger';
 import { Administrator } from './entities/administrator.entity';
 import { School } from 'src/schools/entities/school.entity';
 import { CreateSchoolDto } from 'src/schools/dto/create-school.dto';
 
-@ApiTags('Administrator')
-@Controller('administrator')
+@ApiTags('Super Administrator')
+@Controller('super-administrator')
 export class AdministratorsController {
   constructor(private readonly administratorsService: AdministratorsService) {}
-
+  @ApiExcludeEndpoint()
   @Post()
   @ApiOperation({
-    summary: 'Create a new administrator',
+    summary: 'Create a new super administrator',
     description: 'Creates a new administrator record in the system',
   })
   @ApiResponse({
     status: 201,
-    description: 'Administrator successfully created',
+    description: 'Super administrator successfully created',
     type: Administrator,
   })
   @ApiResponse({ status: 400, description: 'Bad request - invalid input data' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
   @ApiBody({
     type: CreateAdministratorDto,
-    description: 'Administrator data to create',
+    description: 'Super administrator data to create',
   })
   create(@Body() createAdministratorDto: CreateAdministratorDto) {
     return this.administratorsService.create(createAdministratorDto);
   }
 
-  @Post('school')
+  @Post('school-administrator')
   @ApiOperation({
-    summary: 'Create a new school',
-    description: 'Administrator creates a new school in the system',
+    summary: 'Create a new school admin (responsible for a school)',
+    description: 'Super administrator creates a new school in the system',
   })
   @ApiResponse({
     status: 201,
@@ -66,6 +67,7 @@ export class AdministratorsController {
     return this.administratorsService.createSchool(csDto);
   }
 
+  @ApiExcludeEndpoint()
   @Get()
   @ApiOperation({
     summary: 'Get all administrators',
@@ -73,7 +75,7 @@ export class AdministratorsController {
   })
   @ApiResponse({
     status: 200,
-    description: 'Successfully retrieved all administrators',
+    description: 'Successfully retrieved all super administrators',
     type: [Administrator],
   })
   @ApiResponse({ status: 500, description: 'Internal server error' })
@@ -89,7 +91,7 @@ export class AdministratorsController {
   })
   @ApiResponse({
     status: 200,
-    description: 'Successfully retrieved administrator',
+    description: 'Successfully retrieved super administrator',
     type: Administrator,
   })
   @ApiResponse({ status: 404, description: 'Administrator not found' })
@@ -107,20 +109,20 @@ export class AdministratorsController {
 
   @Patch()
   @ApiOperation({
-    summary: 'Update administrator',
-    description: 'Updates an existing administrator record',
+    summary: 'Update super administrator',
+    description: 'Updates an existing super administrator record',
   })
   @ApiResponse({
     status: 200,
-    description: 'Administrator successfully updated',
+    description: 'Super administrator successfully updated',
     type: Administrator,
   })
-  @ApiResponse({ status: 404, description: 'Administrator not found' })
+  @ApiResponse({ status: 404, description: 'Super administrator not found' })
   @ApiResponse({ status: 400, description: 'Bad request - invalid input data' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
   @ApiBody({
     type: UpdateAdministratorDto,
-    description: 'Administrator data to update',
+    description: 'Super administrator data to update',
   })
   update(@Body() updateAdministratorDto: UpdateAdministratorDto) {
     return this.administratorsService.update(updateAdministratorDto);
@@ -128,12 +130,12 @@ export class AdministratorsController {
 
   @Delete(':id')
   @ApiOperation({
-    summary: 'Delete administrator',
+    summary: 'Delete super administrator',
     description: 'Deletes an administrator record from the system',
   })
   @ApiResponse({
     status: 200,
-    description: 'Administrator successfully deleted',
+    description: 'Super administrator successfully deleted',
   })
   @ApiResponse({ status: 404, description: 'Administrator not found' })
   @ApiResponse({ status: 400, description: 'Invalid UUID format' })
@@ -141,7 +143,7 @@ export class AdministratorsController {
   @ApiParam({
     name: 'id',
     type: String,
-    description: 'Administrator UUID to delete',
+    description: 'Super administrator UUID to delete',
     example: '380ca6bc-cae9-4486-a543-056029aaba1c',
   })
   remove(@Param('id') id: string) {

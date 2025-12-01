@@ -26,11 +26,10 @@ export class DepartmentsService {
   async assignTeacherToSubject(tsDto: CreateTeacherSubjectDto) {
     return await this.crudService.create('teacher_subjects', tsDto);
   }
-  /*
-  async developCurriculum(ssDto: CreateSubjectSyllabusDto){
-    return await this.crudService.create('subject_syllabus', ssDto);
+
+  async fetchTeacherSubjects(department_id){
+    return await this.crudService.findAllByColumn('subjects', 'department_id', department_id)
   }
-  */
 
   async createSyllabus(syllabusDto: CreateSyllabusDto) {
     try {

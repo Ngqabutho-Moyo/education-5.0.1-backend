@@ -103,6 +103,22 @@ export class DepartmentsController {
     return this.departmentsService.findAll();
   }
 
+  @Get('/teacher-subjects/:department_id')
+  @ApiOperation({
+    summary: 'Get all teacher-subject assignments for department',
+    description:
+      'Retrieves a list of all teacher-subject assignments in the system',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved all teacher-subject assignments',
+    type: [Department],
+  })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  fetchTeacherSubjects(@Param('department_id') department_id: string) {
+    return this.departmentsService.fetchTeacherSubjects(department_id);
+  }
+
   @Get(':id')
   @ApiOperation({
     summary: 'Get department by ID',

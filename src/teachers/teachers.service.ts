@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateTeacherDto, EnrolStudentDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
@@ -14,6 +13,9 @@ import { CreateAssignmentDto } from 'src/assignments/dto/create-assignment.dto';
 import { CreateSyllabusResourceDto } from 'src/syllabus-resources/dto/create-syllabus-resource.dto';
 import { Assignment } from 'src/assignments/entities/assignment.entity';
 import { CreateSyllabusAssignmentDto } from 'src/syllabus-assignments/dto/create-syllabus-assignment.dto';
+import { CreateClassDto } from 'src/classes/dto/create-class.dto';
+import { CreateTeacherClassDto } from 'src/teacher-classes/dto/create-teacher-class.dto';
+import { Class } from 'src/classes/entities/class.entity';
 
 @Injectable()
 export class TeachersService {
@@ -30,23 +32,17 @@ export class TeachersService {
   }
 
   async enrolStudentIntoClass(enrolStudentDto: EnrolStudentDto) {
-    const { data, error } = await this.postgresrest
-      .from('student_classes')
-      .update({ status: 'enrolled', updated_at: new Date() })
-      .eq('student_id', enrolStudentDto.student_id)
-      .eq('class_id', enrolStudentDto.class_id)
-      .eq('teacher_id', enrolStudentDto.teacher_id)
-      .select()
-      .single();
-    if (error && error.code != 'PGRST116') {
-      this.logger.error('Failed to update student_classes', error);
-      return new GeneralErrorResponseDto(
-        400,
-        'Failed to update student_classes',
-      );
+    try {
+      const response = await this.crudService.create('student_classes', enrolStudentDto);
+      if(response instanceof GeneralErrorResponseDto){
+        return response
+      }
+      this.logger.log('Student has been enrolled', response.data);
+      return new SuccessResponseDto(200, 'Student enrolled successfully', response.data);
+    } catch (error) {
+      this.logger.log('enrolStudentIntoClass error', error);
+      return new GeneralErrorResponseDto(500, 'enrolStudentIntoClass error', error)
     }
-    this.logger.log('Student has been enrolled', data);
-    return new SuccessResponseDto(200, 'Student enrolled successfully', data);
   }
 
   async postResource(resourceDto: CreateResourceDto) {
@@ -101,6 +97,10 @@ export class TeachersService {
     }
   }
 
+  async viewResourcesForClass(syllabus_id: string){
+    return await this.crudService.findAllByColumn('resources', 'syllabus_id', syllabus_id);
+  }
+
   async postAssgnment(assignmentDto: CreateAssignmentDto) {
     try {
 
@@ -136,6 +136,30 @@ export class TeachersService {
       this.logger.error('postResource error', e);
       return new GeneralErrorResponseDto(500, 'postResource error', e);
     }
+  }
+
+  async viewAssignmentsForClass(syllabus_id: string){
+    return await this.crudService.findAllByColumn('assignments', 'syllabus_id', syllabus_id);
+  }
+
+  async createClass(classDto: CreateClassDto){
+    const createClassResponse = await this.crudService.create('classes', classDto, 'CLS');
+    if(createClassResponse instanceof GeneralErrorResponseDto){
+      return createClassResponse;
+    }
+    const newClass = createClassResponse.data as Class;
+    const tcDto = new CreateTeacherClassDto();
+    tcDto.class_id = newClass.id;
+    tcDto.teacher_id = classDto.teacher_in_charge;
+    tcDto.status = 'created';
+    const tcResponse = await this.crudService.create('teacher_classes', tcDto);
+    if(tcResponse instanceof GeneralErrorResponseDto){
+      return tcResponse;
+    }
+  }
+
+  async viewClasses(teacher_id: string){
+    return await this.crudService.findAllByColumn('classes', 'teacher_in_charge', teacher_id);
   }
 
   async findAll() {

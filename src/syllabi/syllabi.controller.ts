@@ -13,6 +13,7 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiExcludeController,
 } from '@nestjs/swagger';
 import { CreateSyllabusDto } from './dto/create-syllabus.dto';
 import { UpdateSyllabusDto } from './dto/update-syllabus.dto';
@@ -20,6 +21,7 @@ import { Syllabus } from './entities/syllabus.entity';
 import { SyllabusService } from './syllabi.service';
 
 @ApiTags('Syllabus')
+@ApiExcludeController()
 @Controller('syllabus')
 export class SyllabusController {
   constructor(private readonly sService: SyllabusService) {}

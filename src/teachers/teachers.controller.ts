@@ -16,18 +16,21 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiExcludeEndpoint,
 } from '@nestjs/swagger';
 import { Teacher } from './entities/teacher.entity';
 import { CreateResourceDto } from 'src/resources/dto/create-resource.dto';
 import { Resource } from 'src/resources/entities/resource.entity';
 import { Assignment } from 'src/assignments/entities/assignment.entity';
 import { CreateAssignmentDto } from 'src/assignments/dto/create-assignment.dto';
+import { CreateClassDto } from 'src/classes/dto/create-class.dto';
 
 @ApiTags('Teacher')
 @Controller('teacher')
 export class TeachersController {
   constructor(private readonly teachersService: TeachersService) {}
 
+  @ApiExcludeEndpoint()
   @Post()
   @ApiOperation({
     summary: 'Create a new teacher',
@@ -50,8 +53,8 @@ export class TeachersController {
 
   @Post('resource')
   @ApiOperation({
-    summary: 'Create a new syllabus resource',
-    description: 'Creates a new syllabus resource record in the system',
+    summary: 'Create a new resource',
+    description: 'Creates a new resource record in the system',
   })
   @ApiResponse({
     status: 201,
@@ -64,14 +67,14 @@ export class TeachersController {
     type: CreateResourceDto,
     description: 'Resource data to create',
   })
-  postResource(@Body() resourceDto: CreateResourceDto){
+  postResource(@Body() resourceDto: CreateResourceDto) {
     return this.teachersService.postResource(resourceDto);
   }
 
   @Post('assignment')
   @ApiOperation({
-    summary: 'Create a new syllabus assignment',
-    description: 'Creates a new syllabus assignment record in the system',
+    summary: 'Create a new assignment',
+    description: 'Creates a new assignment record in the system',
   })
   @ApiResponse({
     status: 201,
@@ -84,10 +87,51 @@ export class TeachersController {
     type: CreateAssignmentDto,
     description: 'Assignment data to create',
   })
-  postAssgnment(@Body() assignmentDto: CreateAssignmentDto){
+  postAssgnment(@Body() assignmentDto: CreateAssignmentDto) {
     return this.teachersService.postAssgnment(assignmentDto);
   }
 
+  @Post('enrol')
+  @ApiOperation({
+    summary: 'Enrol a student',
+    description: 'Enrol a student into a given class',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Student enrolled successfully',
+    type: EnrolStudentDto,
+  })
+  @ApiResponse({ status: 400, description: 'Bad request - invalid input data' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @ApiBody({
+    type: EnrolStudentDto,
+    description: 'Enrollment data',
+  })
+  enrolStudentIntoClass(@Body() enrolStudentDto: EnrolStudentDto) {
+    return this.teachersService.enrolStudentIntoClass(enrolStudentDto);
+  }
+
+  @Post('class')
+  @ApiOperation({
+    summary: 'Create a class',
+    description: 'Create a class for a given subject',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Class created successfully',
+    type: EnrolStudentDto,
+  })
+  @ApiResponse({ status: 400, description: 'Bad request - invalid input data' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @ApiBody({
+    type: CreateClassDto,
+    description: 'Class data',
+  })
+  createClass(@Body() classDto: CreateClassDto) {
+    return this.teachersService.createClass(classDto);
+  }
+
+  @ApiExcludeEndpoint()
   @Get()
   @ApiOperation({
     summary: 'Get all teachers',
@@ -101,6 +145,51 @@ export class TeachersController {
   @ApiResponse({ status: 500, description: 'Internal server error' })
   findAll() {
     return this.teachersService.findAll();
+  }
+
+  @Get(':syllabus_id/resources')
+  @ApiOperation({
+    summary: 'Get all resources for a given syllabus',
+    description: 'Retrieves a list of all resources in a syllabus',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved all resources',
+    type: [Teacher],
+  })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  viewResourcesForClass(@Param('syllabus_id') syllabus_id: string) {
+    return this.teachersService.viewResourcesForClass(syllabus_id);
+  }
+
+  @Get(':syllabus_id/assignments')
+  @ApiOperation({
+    summary: 'Get all assignments for a given syllabus',
+    description: 'Retrieves a list of all assignments in a syllabus',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved all assignments',
+    type: [Teacher],
+  })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  viewAssignmentsForClass(@Param('syllabus_id') syllabus_id: string) {
+    return this.teachersService.viewAssignmentsForClass(syllabus_id);
+  }
+
+  @Get(':teacher_id/classes')
+  @ApiOperation({
+    summary: 'Get all classes for a given teacher',
+    description: 'Retrieves a list of all classes for a given teacher',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved all classes',
+    type: [Teacher],
+  })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  viewClasses(@Param('teacher_id') syllabus_id: string) {
+    return this.teachersService.viewClasses(syllabus_id);
   }
 
   @Get(':id')
@@ -145,26 +234,6 @@ export class TeachersController {
   })
   update(@Body() updateTeacherDto: UpdateTeacherDto) {
     return this.teachersService.update(updateTeacherDto);
-  }
-
-  @Patch('enrol')
-  @ApiOperation({
-    summary: 'Enrol a student',
-    description: 'Enrol a student into a given class',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Student enrolled successfully',
-    type: EnrolStudentDto,
-  })
-  @ApiResponse({ status: 400, description: 'Bad request - invalid input data' })
-  @ApiResponse({ status: 500, description: 'Internal server error' })
-  @ApiBody({
-    type: EnrolStudentDto,
-    description: 'Enrollment data',
-  })
-  enrolStudentIntoClass(@Body() enrolStudentDto: EnrolStudentDto){
-    return this.teachersService.enrolStudentIntoClass(enrolStudentDto);
   }
 
   @Delete(':id')

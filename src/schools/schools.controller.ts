@@ -13,6 +13,7 @@ import {
   ApiResponse,
   ApiBody,
   ApiParam,
+  ApiExcludeEndpoint,
 } from '@nestjs/swagger';
 import { CreateSchoolDto } from './dto/create-school.dto';
 import { UpdateSchoolDto } from './dto/update-school.dto';
@@ -27,11 +28,12 @@ import { Student } from 'src/students/entities/student.entity';
 import { Subject } from 'rxjs';
 import { Department } from 'src/departments/entities/department.entity';
 
-@ApiTags('School')
-@Controller('school')
+@ApiTags('School Administrator')
+@Controller('school-administrator')
 export class SchoolController {
   constructor(private readonly schoolService: SchoolService) {}
 
+  @ApiExcludeEndpoint()
   @Post()
   @ApiOperation({
     summary: 'Create a new school',
@@ -128,10 +130,11 @@ export class SchoolController {
     type: CreateTeacherDto,
     description: 'School teacher data to create',
   })
-  createTeacher(@Body() teacherDto: CreateTeacherDto){
+  createTeacher(@Body() teacherDto: CreateTeacherDto) {
     return this.schoolService.createTeacher(teacherDto);
   }
 
+  @ApiExcludeEndpoint()
   @Get()
   @ApiOperation({
     summary: 'Get all schools',
@@ -145,6 +148,63 @@ export class SchoolController {
   @ApiResponse({ status: 500, description: 'Internal server error' })
   findAll() {
     return this.schoolService.findAll();
+  }
+
+  @Get('teachers/:school_id')
+  @ApiOperation({
+    summary: 'Get all teachers for a specific school',
+    description: 'Retrieves a list of all school teachers in the system',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved all school teachers',
+    type: [Teacher],
+  })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  findAllTeachersForSchool(@Param('school_id') school_id: string) {
+    return this.schoolService.findAllTeachersForSchool(school_id);
+  }
+
+  @Get('students/:school_id')
+  @ApiOperation({
+    summary: 'Get all students for a specific school',
+    description: 'Retrieves a list of all school students in the system',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved all school students',
+    type: [Student],
+  })
+  findAllStudentsForSchool(@Param('school_id') school_id: string) {
+    return this.schoolService.findAllStudentsForSchool(school_id);
+  }
+
+  @Get('departments/:school_id')
+  @ApiOperation({
+    summary: 'Get all departments for a specific school',
+    description: 'Retrieves a list of all school departments in the system',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved all school departments',
+    type: [Department],
+  })
+  findAllDepartmentsForSchool(@Param('school_id') school_id: string) {
+    return this.schoolService.findAllDepartmentsForSchool(school_id);
+  }
+
+  @Get('subjects/:school_id')
+  @ApiOperation({
+    summary: 'Get all subjects for a specific school',
+    description: 'Retrieves a list of all school subjects in the system',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved all school subjects',
+    type: [Subject],
+  })
+  findAllSubjectsForSchool(@Param('school_id') school_id: string) {
+    return this.schoolService.findAllSubjectsForSchool(school_id);
   }
 
   @Get(':id')
