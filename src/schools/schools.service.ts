@@ -29,7 +29,7 @@ export class SchoolService {
   private readonly logger = new Logger(SchoolService.name);
   constructor(
     private readonly crudService: CrudService,
-    private readonly potgresrest: PostgresRest,
+    private readonly postgresrest: PostgresRest,
     private readonly studentsService: StudentsService,
     private readonly teachersService: TeachersService,
   ) {}
@@ -136,7 +136,7 @@ export class SchoolService {
     try {
       // Check for an existing teacher
       const { data: teacherExists, error: teacherExistsError } =
-        await this.potgresrest
+        await this.postgresrest
           .from('teacher')
           .select()
           .eq('first_name', teacherDto.first_name)
@@ -191,7 +191,7 @@ export class SchoolService {
     try {
       // Check if studet exists
       const { data: studentExists, error: studentExistsError } =
-        await this.potgresrest
+        await this.postgresrest
           .from('student')
           .select()
           .eq('first_name', studentDto.first_name)
