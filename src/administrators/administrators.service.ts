@@ -1,14 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateAdministratorDto } from './dto/create-administrator.dto';
 import { UpdateAdministratorDto } from './dto/update-administrator.dto';
 import { CrudService } from 'src/common/crud/crud.service';
 import { AuthService } from 'src/auth/auth.service';
-import { CreateSchoolDto } from 'src/schools/dto/create-school.dto';
-import { GeneralErrorResponseDto } from 'src/common/dto/general-error-response.dto';
+import { CreateSchoolAdministratorDto } from 'src/school-administrator/dto/create-school-administrator.dto';
 import { CreateAdministratorSchoolDto } from 'src/administrator-schools/dto/create-administrator-school.dto';
-import { School } from 'src/schools/entities/school.entity';
-import { SuccessResponseDto } from 'src/common/dto/success-response.dto';
 import { AdministratorSchool } from 'src/administrator-schools/entities/administrator-school.entity';
+import { GeneralErrorResponseDto } from 'src/common/dto/general-error-response.dto';
+import { SuccessResponseDto } from 'src/common/dto/success-response.dto';
+import { CreateSchoolDto } from 'src/schools/dto/create-school.dto';
+import { School } from 'src/schools/entities/school.entity';
+import { CreateSchoolAdministratorSchoolDto } from 'src/school-administrator-schools/dto/create-school-administrator-school.dto';
+import { PostgresRest } from 'src/common/postgresrest/postgresrest.service';
 
 @Injectable()
 export class AdministratorsService {
@@ -16,12 +21,29 @@ export class AdministratorsService {
   constructor(
     private readonly crudService: CrudService,
     private readonly authService: AuthService,
+    private readonly postgresrest: PostgresRest,
   ) {}
   async create(createAdministratorDto: CreateAdministratorDto) {
     return await this.authService.signup(
       'administrator',
       createAdministratorDto,
       'ADM',
+    );
+  }
+
+  async createSchoolAdministrator(csaDto: CreateSchoolAdministratorDto) {
+    return await this.authService.signup(
+      'school_administrator',
+      csaDto,
+      'SCHADM',
+    );
+  }
+
+  async fetchSchoolAdministratorsForAdmin(admin_id: string) {
+    return await this.crudService.findAllByColumn(
+      'school_administrator',
+      'created_by',
+      admin_id,
     );
   }
 
@@ -70,12 +92,51 @@ export class AdministratorsService {
     );
   }
 
+  async fetchSchoolsForAdmin(admin_id: string) {
+    return await this.crudService.findAllByColumn(
+      'schools',
+      'admin_id',
+      admin_id,
+    );
+  }
+
+  async assignSchoolAdmin(csasDto: CreateSchoolAdministratorSchoolDto) {
+    return await this.crudService.create(
+      'school_administrator_schools',
+      csasDto,
+    );
+  }
+
+  async getAssignedSchools(admin_id: string) {
+    try {
+      const { data, error } = await this.postgresrest.rpc(
+        'get_assigned_schools',
+        { p_admin_id: admin_id },
+      );
+      if (error) {
+        this.logger.error('Failed to fetch assigned schools', error);
+      }
+      return new SuccessResponseDto(
+        200,
+        'Assigned schools fetched successfully',
+        data,
+      );
+    } catch (e) {
+      this.logger.error('getAssignedSchools error', e);
+      return new GeneralErrorResponseDto(500, 'getAssignedSchools error', e);
+    }
+  }
+
   async findAll() {
     return await this.crudService.findAll('administrator');
   }
 
   async findAllSchoolsForAdmin(admin_id: string) {
-    return await this.crudService.findAllByColumn('schools', 'admin_id', admin_id);
+    return await this.crudService.findAllByColumn(
+      'schools',
+      'admin_id',
+      admin_id,
+    );
   }
 
   async findOne(id: string) {

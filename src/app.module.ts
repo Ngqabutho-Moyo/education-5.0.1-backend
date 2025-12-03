@@ -29,6 +29,7 @@ import { SchoolDepartmentsModule } from './school-departments/school-departments
 import { SchoolSubjectsModule } from './school-subjects/school-subjects.module';
 import { SchoolTeachersModule } from './school-teachers/school-teachers.module';
 import { SchoolStudentsModule } from './school-students/school-students.module';
+import { SchoolAdministratorsModule } from './school-administrator/school-administrator.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { SchoolStudentsModule } from './school-students/school-students.module';
     SchoolSubjectsModule,
     SchoolTeachersModule,
     SchoolStudentsModule,
+    SchoolAdministratorsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
