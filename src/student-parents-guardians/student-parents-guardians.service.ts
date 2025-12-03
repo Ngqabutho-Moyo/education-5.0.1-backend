@@ -7,7 +7,8 @@ export class StudentParentsGuardiansService {
   constructor(private readonly crudService: CrudService) {}
   
   async create(createStudentParentsGuardianDto: CreateStudentParentsGuardianDto) {
-    return await this.crudService.create('student_parents_guardians', createStudentParentsGuardianDto, 'STUPG');
+    // Don't generate code for junction table - just insert the relationship
+    return await this.crudService.create('student_parents_guardians', createStudentParentsGuardianDto);
   }
 
   async findAll() {
